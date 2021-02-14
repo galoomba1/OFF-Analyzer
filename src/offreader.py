@@ -12,6 +12,12 @@ def sqlength(edge):
 
     return a
 
+suffix_shape = ["", "telon", "gon", "hedron", "choron", "teron", "peton", "exon", "zetton", "yotton", "xennon", "dakon", "hendon"]
+suffix_elements = ["Vertices", "Edges", "Faces", "Cells", "Tera", "Peta", "Exa", "Zetta", "Yotta", "Xenna", "Daka", "Henda"]
+
+eps = 1e-9 # epsilon for float comparisons
+
+
 off = open("input.off", "r")
 
 count = [] # element counts
@@ -70,7 +76,7 @@ while i < len(lines)-1:
                 edges.add(frozenset([l[k],l[k+1]]))
             edges.add(frozenset([l[1],l[-1]]))
 
-            el[2].append(l[1:])
+            el[2].append(l) #includes count
             i += 1
             line = lines[i]
             if(j+1 == count[2]):
@@ -81,7 +87,7 @@ while i < len(lines)-1:
 
     # higher elements
     for j in range(count[cur]):
-        el[cur].append(l[1:])
+        el[cur].append(l) #includes count
         if(j+1 == count[cur]):
                 break
         i += 1
@@ -95,8 +101,6 @@ for i in edges:
         edge.append(j)
     el[1].append(edge)
 
-
-eps = 1e-9
 
 edgesqlengths = {}
 
@@ -118,13 +122,36 @@ edgelengths.sort()
 edgecounts = [edgesqlengths[i] for i in edgelengths]
 edgelengths = list(map(math.sqrt, edgelengths))
 
+
+
 '''for i in range(d):
     print(el[i])
     print(len(el[i]))
     print()'''
 
-print("Edges:")
+print(suffix_elements[0]+":")
+print(count[0])
+print()
+
+print(suffix_elements[1]+":")
 for i in range(len(edgelengths)):
     print(edgecounts[i], "of length", round(edgelengths[i],6))
-
 print()
+
+for r in range(2,d):
+    elfacetcounts = {}
+    for element in el[r]:
+        if(element[0] in elfacetcounts):
+            elfacetcounts[element[0]] += 1
+        else:
+            elfacetcounts[element[0]] = 1
+    
+    facetcounts = list(elfacetcounts.keys())
+    facetcounts.sort()
+    elementcounts = [elfacetcounts[i] for i in facetcounts]
+
+    print(suffix_elements[r]+":")
+    for i in range(len(facetcounts)):
+        print(str(elementcounts[i]) + " × " + str(facetcounts[i]) + "-" + str(suffix_shape[r]))
+    
+    print()
