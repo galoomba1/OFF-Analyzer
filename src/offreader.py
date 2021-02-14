@@ -12,8 +12,8 @@ def sqlength(edge):
 
     return a
 
-suffix_shape = ["", "telon", "gon", "hedron", "choron", "teron", "peton", "exon", "zetton", "yotton", "xennon", "dakon", "hendon"]
-suffix_elements = ["Vertices", "Edges", "Faces", "Cells", "Tera", "Peta", "Exa", "Zetta", "Yotta", "Xenna", "Daka", "Henda"]
+suffix_shape = ["", "telon", "gon", "hedron", "choron", "teron", "peton", "exon", "zetton", "yotton", "xennon", "dakon", "hendon", "dokon", "tradakon", "tedakon", "pedakon", "exdakon", "zedakon", "yodakon", "nedakon", "ikon", "ikenon", "ikodon", "iktron"]
+suffix_elements = ["vertices", "edges", "faces", "cells", "tera", "peta", "exa", "zetta", "yotta", "xenna", "daka", "henda", "doka", "tradaka", "tedaka", "pedaka", "exdaka", "zedaka", "yodaka", "nedaka", "ika", "ikena", "ikoda", "iktra"]
 
 eps = 1e-9 # epsilon for float comparisons
 
@@ -62,10 +62,10 @@ while i < len(lines)-1:
         for j in range(count[0]):
             el[0].append(l)
 
-            i += 1
-            line = lines[i]
             if(j+1 == count[0]):
                 break
+            i += 1
+            line = lines[i]
             l = list(map(float,line.rstrip().split(' ')))
         cur += 1
         continue
@@ -77,10 +77,11 @@ while i < len(lines)-1:
             edges.add(frozenset([l[1],l[-1]]))
 
             el[2].append(l) #includes count
-            i += 1
-            line = lines[i]
+            
             if(j+1 == count[2]):
                 break
+            i += 1
+            line = lines[i]
             l = list(map(int,line.rstrip().split(' ')))
         cur += 1
         continue
@@ -129,11 +130,11 @@ edgelengths = list(map(math.sqrt, edgelengths))
     print(len(el[i]))
     print()'''
 
-print(suffix_elements[0]+":")
+print(suffix_elements[0].capitalize()+":")
 print(count[0])
 print()
 
-print(suffix_elements[1]+":")
+print(suffix_elements[1].capitalize()+":")
 for i in range(len(edgelengths)):
     print(edgecounts[i], "of length", round(edgelengths[i],6))
 print()
@@ -150,7 +151,7 @@ for r in range(2,d):
     facetcounts.sort()
     elementcounts = [elfacetcounts[i] for i in facetcounts]
 
-    print(suffix_elements[r]+":")
+    print(suffix_elements[r].capitalize()+":")
     for i in range(len(facetcounts)):
         print(str(elementcounts[i]) + " × " + str(facetcounts[i]) + "-" + str(suffix_shape[r]))
     
