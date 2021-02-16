@@ -1,6 +1,6 @@
 import math
 
-def sqlength(edge):
+def sqlength(edge): # returns squared length of an edge given as a list or set of 2 elements
     global el
     global d
     a = 0
@@ -11,6 +11,22 @@ def sqlength(edge):
         a += (el[0][v1][i] - el[0][v2][i])**2
 
     return a
+
+def rect(length): # "general rectification" per GAP
+    global el
+    global d
+
+    def midpoint(edge):
+        return [(el[0][edge[0]][i]-el[0][edge[1]][i])/2 for i in range(d)]
+
+    o = []
+    sl = length**2
+
+    for edge in el[1]:
+        if(edge[2] - sl < eps):
+            o.append(midpoint(edge))
+    
+    return o
 
 suffix_shape = ["", "telon", "gon", "hedron", "choron", "teron", "peton", "exon", "zetton", "yotton", "xennon", "dakon", "hendon", "dokon", "tradakon", "tedakon", "pedakon", "exdakon", "zedakon", "yodakon", "nedakon", "ikon", "ikenon", "ikodon", "iktron"]
 suffix_elements = ["vertices", "edges", "faces", "cells", "tera", "peta", "exa", "zetta", "yotta", "xenna", "daka", "henda", "doka", "tradaka", "tedaka", "pedaka", "exdaka", "zedaka", "yodaka", "nedaka", "ika", "ikena", "ikoda", "iktra"]
@@ -77,7 +93,7 @@ while i < len(lines)-1:
             edges.add(frozenset([l[1],l[-1]]))
 
             el[2].append(l) #includes count
-            
+
             if(j+1 == count[2]):
                 break
             i += 1
@@ -96,7 +112,7 @@ while i < len(lines)-1:
         l = list(map(int,line.rstrip().split(' ')))
     cur += 1
 
-for i in edges:
+for i in edges: # copies the set of edges to el[1]
     edge = []
     for j in i:
         edge.append(j)
@@ -105,10 +121,11 @@ for i in edges:
 
 edgesqlengths = {}
 
-for edge in edges:
+for edge in el[1]:
     c = 1
-    edge = list(edge)
+    #edge = list(edge)
     sl = sqlength(edge)
+    edge.append(sl)
     k = list(edgesqlengths.keys())
     for i in range(len(k)):
         if(abs(k[i] - sl) < eps):
@@ -156,3 +173,16 @@ for r in range(2,d):
         print(str(elementcounts[i]) + " × " + str(facetcounts[i]) + "-" + str(suffix_shape[r]))
     
     print()
+
+out = open("output.txt", "w")
+
+r = rect(edgelengths[int(input())-1])
+for i in r:
+    #print(i)
+    k=1
+    for j in i:
+        out.write(str(j))
+        if(k!=d):
+            out.write(' ')
+        k+=1
+    out.write('\n')
