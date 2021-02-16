@@ -147,6 +147,7 @@ edgelengths = list(map(math.sqrt, edgelengths))
     print(len(el[i]))
     print()'''
 
+print()
 print(suffix_elements[0].capitalize()+":")
 print(count[0])
 print()
@@ -174,7 +175,7 @@ for r in range(2,d):
     
     print()
 
-out = open("output.txt", "w")
+out = open("polytope_input.txt", "w")
 
 r = rect(edgelengths[int(input())-1])
 out.write(str(d) + '\n' + str(len(r)) + '\n')
