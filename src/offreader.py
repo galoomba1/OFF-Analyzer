@@ -17,7 +17,7 @@ def rect(length): # "general rectification" per GAP
     global d
 
     def midpoint(edge):
-        return [(el[0][edge[0]][i]-el[0][edge[1]][i])/2 for i in range(d)]
+        return [(el[0][edge[0]][i]+el[0][edge[1]][i])/2 for i in range(d)]
 
     o = []
     sl = length**2
