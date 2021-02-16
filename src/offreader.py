@@ -23,7 +23,7 @@ def rect(length): # "general rectification" per GAP
     sl = length**2
 
     for edge in el[1]:
-        if(edge[2] - sl < eps):
+        if(abs(edge[2] - sl) < eps):
             o.append(midpoint(edge))
     
     return o
@@ -177,6 +177,7 @@ for r in range(2,d):
 out = open("output.txt", "w")
 
 r = rect(edgelengths[int(input())-1])
+out.write(str(d) + '\n' + str(len(r)) + '\n')
 for i in r:
     #print(i)
     k=1
