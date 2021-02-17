@@ -28,6 +28,30 @@ def rect(length): # "general rectification" per GAP
     
     return o
 
+def trunc(length, ratio):
+    global el
+    global d
+
+    def leftpoint(edge):
+        v1 = el[0][edge[0]]
+        v2 = el[0][edge[1]]
+        return [v1[i]+ratio*(v2[i]-v1[i]) for i in range(d)]
+    
+    def rightpoint(edge):
+        v1 = el[0][edge[0]]
+        v2 = el[0][edge[1]]
+        return [v2[i]+ratio*(v1[i]-v2[i]) for i in range(d)]
+
+    o = []
+    sl = length**2
+
+    for edge in el[1]:
+        if(abs(edge[2] - sl) < eps):
+            o.append(leftpoint(edge))
+            o.append(rightpoint(edge))
+
+    return o
+
 suffix_shape = ["", "telon", "gon", "hedron", "choron", "teron", "peton", "exon", "zetton", "yotton", "xennon", "dakon", "hendon", "dokon", "tradakon", "tedakon", "pedakon", "exdakon", "zedakon", "yodakon", "nedakon", "ikon", "ikenon", "ikodon", "iktron"]
 suffix_elements = ["vertices", "edges", "faces", "cells", "tera", "peta", "exa", "zetta", "yotta", "xenna", "daka", "henda", "doka", "tradaka", "tedaka", "pedaka", "exdaka", "zedaka", "yodaka", "nedaka", "ika", "ikena", "ikoda", "iktra"]
 
@@ -175,9 +199,16 @@ for r in range(2,d):
     
     print()
 
+mode = input()
 out = open("polytope_input.txt", "w")
 
-r = rect(edgelengths[int(input())-1])
+ratio = 1/4
+
+if(mode=="r"):
+    r = rect(edgelengths[int(input())-1])
+elif(mode=="t"):
+    r = trunc(edgelengths[int(input())-1],ratio)
+
 out.write(str(d) + '\n' + str(len(r)) + '\n')
 for i in r:
     #print(i)
